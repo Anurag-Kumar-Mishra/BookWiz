@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260857997867",
+    "project_id": "bookwiz4093",
+    "storage_bucket": "bookwiz4093.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260857997867:android:487b5a1a0209837e00d86e",
+        "android_client_info": {
+          "package_name": "com.example.bookwiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260857997867-tbpktm65tfa1n9ds1a7ahufmhc2p5gui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1gIO7XMQJXy0HmrY7PLRJ-xxEEZDNUxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260857997867-tbpktm65tfa1n9ds1a7ahufmhc2p5gui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
