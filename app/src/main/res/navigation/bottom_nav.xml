@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.bookwiz.fragments.Home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment" />
+
+    <fragment
+        android:id="@+id/nav_read"
+        android:name="com.example.bookwiz.fragments.Read.ReadFragment"
+        android:label="Read"
+        tools:layout="@layout/read_fragment" />
+
+</navigation>

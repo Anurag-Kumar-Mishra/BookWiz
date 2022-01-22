@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BookWiz</string>
+    <string name="sign_in">Sign In</string>
+    <string name="get_started">Get Started</string>
 </resources>
