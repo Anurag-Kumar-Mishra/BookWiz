@@ -75,7 +75,7 @@ class ReadFragment : Fragment(), IBookListRVAdapter {
                 folioReader.openBook(localFile.canonicalPath)
 
             }.addOnFailureListener{
-                Toast.makeText(requireContext(),"Failed to fetch eBook",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Couldn't download EBook because: " + it.localizedMessage,Toast.LENGTH_SHORT).show()
             }
         }
     }

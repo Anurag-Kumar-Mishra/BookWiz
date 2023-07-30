@@ -42,10 +42,9 @@ class BookDao {
             val userDao = UserDao()
             val user = userDao.getUserById(currentUser).await()
                 .toObject(User::class.java)!!
-            val book = Book(user.uid, 0.0)
+            val book = Book(user.uid)
             bookCollection.document().set(book)
         }
-
     }
 
     fun addBook(bookAdd: String) {
@@ -53,40 +52,18 @@ class BookDao {
 
             val currentUser = auth.currentUser!!.uid
             var currentBook = ""
-            var currentBookReadTime: Double
             var bookList: ArrayList<String>
             var book: Book
             val query: Task<QuerySnapshot> =
                 bookCollection.whereEqualTo("ownerId", currentUser).get()
             query.addOnSuccessListener {
                 currentBook = it.documents[0].id
-                currentBookReadTime = it.documents[0]["totalReadTime"].toString().toDouble()
                 bookList = it.documents[0]["bookList"] as ArrayList<String>
                 if(!(bookList.contains(bookAdd))){
                     bookList.add(bookAdd)
-                    book = Book(currentUser,currentBookReadTime,bookList)
+                    book = Book(currentUser,bookList)
                     bookCollection.document(currentBook).set(book)
                 }
-
-            }
-        }
-
-    }
-
-    fun increaseTotalReadTime(time: Double) {
-        GlobalScope.launch {
-
-            val currentUser = auth.currentUser!!.uid
-            var currentBook = ""
-            var currentBookReadTime: Double
-            var book: Book
-            val query: Task<QuerySnapshot> =
-                bookCollection.whereEqualTo("ownerId", currentUser).get()
-            query.addOnSuccessListener {
-                currentBook = it.documents[0].id
-                currentBookReadTime = it.documents[0]["totalReadTime"].toString().toDouble()
-                book = Book(currentUser,currentBookReadTime+time)
-                bookCollection.document(currentBook).set(book)
 
             }
         }

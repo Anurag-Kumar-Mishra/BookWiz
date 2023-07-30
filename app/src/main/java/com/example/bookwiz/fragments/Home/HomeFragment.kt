@@ -48,13 +48,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val name: TextView = view.findViewById(R.id.textViewUserName)
-        val email: TextView = view.findViewById(R.id.textViewUserEmail)
-        val userReadTime: TextView = view.findViewById(R.id.textViewUserReadTime)
         val userImage: ImageView = view.findViewById(R.id.imageViewUser)
         val currentUser = auth.currentUser!!.uid
-        var currentReadTime: Double
         var userName: String
-        var userEmail: String
         var imageUrl: String
         var booksReadList: ArrayList<String>
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewBooksRead)
@@ -63,9 +59,7 @@ class HomeFragment : Fragment() {
         val query: Task<QuerySnapshot> =
             bookCollection.whereEqualTo("ownerId", currentUser).get()
         query.addOnSuccessListener {
-            currentReadTime = it.documents[0]["totalReadTime"].toString().toDouble()
             booksReadList = it.documents[0]["bookList"] as ArrayList<String>
-            userReadTime.text = "Total Read time: ${currentReadTime.roundToInt()} minutes"
             mAdapter = BooksReadRVAdapter(requireContext(),booksReadList)
             recyclerView.adapter = mAdapter
         }
@@ -74,11 +68,9 @@ class HomeFragment : Fragment() {
             userCollection.whereEqualTo("uid", currentUser).get()
         query1.addOnSuccessListener {
             userName = it.documents[0]["displayName"].toString()
-            userEmail = it.documents[0]["email"].toString()
             imageUrl = it.documents[0]["imageUrl"].toString()
 
             name.text = userName
-            email.text = userEmail
             Glide.with(this).load(imageUrl).circleCrop().into(userImage)
         }
 

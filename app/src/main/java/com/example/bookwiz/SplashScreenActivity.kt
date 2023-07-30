@@ -13,22 +13,10 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        if(loadData()){
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent (this,SignInActivity::class.java)
-                startActivity(intent)
-                finish()
-            }, 3000)
-
-        }
-        else
-            startActivity(Intent(this,OnBoardingActivity::class.java))
-
-    }
-    private fun loadData(): Boolean {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("OnBoardingBoolean",
-            Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean("FIRST_RUN_OVER", false)
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 3000)
     }
 }
