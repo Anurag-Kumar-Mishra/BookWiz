@@ -28,9 +28,6 @@ import java.sql.Time
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var bookDao: BookDao
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,11 +35,6 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         val navController = findNavController(R.id.fragmentContainerView)
         navView.setupWithNavController(navController)
-
-        auth = Firebase.auth
-        bookDao = BookDao()
-        bookDao.checkBook()
-
         isReadStoragePermissionGranted()
     }
 

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import com.example.bookwiz.daos.BookDao
 import com.example.bookwiz.daos.UserDao
 import com.example.bookwiz.models.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -31,6 +32,7 @@ class SignInActivity : AppCompatActivity() {
     private val RC_SIGN_IN: Int = 123
     lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private lateinit var bookDao: BookDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +103,8 @@ class SignInActivity : AppCompatActivity() {
             val usersDao = UserDao()
             usersDao.addUser(user)
 
+            bookDao = BookDao()
+            bookDao.checkBook()
             val mainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()

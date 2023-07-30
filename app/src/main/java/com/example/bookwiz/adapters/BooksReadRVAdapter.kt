@@ -8,21 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookwiz.R
 
-class BooksReadRVAdapter(private val context: Context, private val bookList: ArrayList<String>): RecyclerView.Adapter<BooksReadViewHolder>() {
+class BooksReadRVAdapter(private val context: Context, private val bookList: ArrayList<String>?): RecyclerView.Adapter<BooksReadViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksReadViewHolder {
         return BooksReadViewHolder(LayoutInflater.from(context).inflate(R.layout.item_books_read,parent,false))
     }
 
     override fun onBindViewHolder(holder: BooksReadViewHolder, position: Int) {
-        val bookName = bookList[position]
+        val bookName = bookList?.get(position)
         val bookNumber:Int = position+1
         holder.bookReadName.text = bookName
         holder.bookReadNumber.text = "$bookNumber. "
     }
 
     override fun getItemCount(): Int {
-        return bookList.size
+        return bookList?.size ?: 0
     }
 }
 

@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
         var booksReadList: ArrayList<String>
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewBooksRead)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.itemAnimator = null
 
         val query: Task<QuerySnapshot> =
             bookCollection.whereEqualTo("ownerId", currentUser).get()
