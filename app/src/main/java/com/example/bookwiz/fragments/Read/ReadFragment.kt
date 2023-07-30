@@ -1,14 +1,26 @@
 package com.example.bookwiz.fragments.Read
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bookwiz.MainActivity
 import com.example.bookwiz.R
 import com.example.bookwiz.adapters.BookListRVAdapter
 import com.example.bookwiz.adapters.IBookListRVAdapter
@@ -46,6 +58,7 @@ class ReadFragment : Fragment(), IBookListRVAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val readButton: Button = view.findViewById(R.id.buttonReadOffline)
         bookDetailsDao = BookDetailsDao()
         bookDao = BookDao()
         val bookCollection = bookDetailsDao.bookCollection.orderBy("bookName",Query.Direction.ASCENDING)
@@ -57,6 +70,19 @@ class ReadFragment : Fragment(), IBookListRVAdapter {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = null
 
+        readButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+            ){
+                Toast.makeText(requireContext(),"Grant Permission First",Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
+
+            else {
+                showFileChooser()
+            }
+        }
 
     }
 
@@ -78,6 +104,42 @@ class ReadFragment : Fragment(), IBookListRVAdapter {
                 Toast.makeText(requireContext(),"Couldn't download EBook because: " + it.localizedMessage,Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showFileChooser() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        try {
+            startActivityForResult(
+                Intent.createChooser(intent, "Select a File to Upload"), 1
+            )
+        } catch (ex: ActivityNotFoundException) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(
+                requireContext(), "Please install a File Manager.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    @SuppressLint("Range")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            1 -> if (resultCode === AppCompatActivity.RESULT_OK) {
+                // Get the Uri of the selected file
+                val uri: Uri? = data!!.data
+                val uriString =uri!!.path.toString()
+                Log.e("filex",uriString)
+                val myFile = File(uriString)
+                var path = myFile.canonicalPath
+                path=path.split(":")[1]
+                val folioReader = FolioReader.get()
+                val file = File(Environment.getExternalStorageDirectory(), path)
+                folioReader.openBook(file.path)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onStart() {
